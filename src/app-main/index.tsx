@@ -7,6 +7,8 @@ import { store } from "../store";
 class MyFooter extends connectStore(QuarkElement) {
 	componentDidMount() {
 		// store.setSong(moon)
+		console.log('main did');
+		
 	}
 
 	render() {
