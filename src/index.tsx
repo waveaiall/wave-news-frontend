@@ -49,8 +49,8 @@ router.setRoutes([
 			await import("./app-main");
 		},
 	},
-	{
-		path: "(.*)",
-		component: "app-not-found",
-	},
+	// {
+	// 	path: "(.*)",
+	// 	component: "app-not-found",
+	// },
 ]);

@@ -18,7 +18,7 @@ class MyFooter extends connectStore(QuarkElement) {
 	render() {
 		return (
 			<div class="login-container">
-				请输入
+				请输入用户名
 				<input type="text" placeholder="请输入用户名" />
 				<div class="submit" onClick={this.submit}>
 					提交
