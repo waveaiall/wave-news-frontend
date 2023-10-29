@@ -1,6 +1,4 @@
-<div align="center">
-
-<h1>Quarkc Wave news</h1>
+# Quarkc Wave news
 
 ## Develop & Installation
 
