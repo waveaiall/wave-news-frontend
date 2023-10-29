@@ -9,11 +9,20 @@ class MyFooter extends connectStore(QuarkElement) {
 		// store.setSong(moon)
 	}
 
+	submit = () => {
+		console.log(222);
+
+		window.location.href = "/main";
+	};
+
 	render() {
 		return (
-			<div class="app-footer">
+			<div class="login-container">
 				请输入
 				<input type="text" placeholder="请输入用户名" />
+				<div class="submit" onClick={this.submit}>
+					提交
+				</div>
 			</div>
 		);
 	}

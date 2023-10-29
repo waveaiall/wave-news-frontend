@@ -27,23 +27,24 @@
 import { Router } from "@vaadin/router";
 import "./index.less";
 
-import "./app-main";
 import "./app-login";
+import "./app-main";
+// import "./app-home";
 
 const outlet = document.querySelector("#root");
 export const router = new Router(outlet);
 
 router.setRoutes([
 	{
-		path: "/login",
-		component: "app-login", // custom element name
+		path: "/",
+		component: "app-login",
 		action: async () => {
 			await import("./app-login");
 		},
 	},
 	{
-		path: "/",
-		component: "app-main",
+		path: "/main",
+		component: "app-main", // custom element name
 		action: async () => {
 			await import("./app-main");
 		},
