@@ -38,6 +38,7 @@ class MyApp extends QuarkElement {
 
     recognition.continuous = false
     // recognition.lang = 'en-US'
+    recognition.lang = 'zh-CN'
     recognition.interimResults = false
     recognition.maxAlternatives = 1
 
