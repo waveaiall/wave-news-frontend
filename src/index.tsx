@@ -29,7 +29,7 @@ class MyApp extends QuarkElement {
             <div class="result" id="result">
               {/* {this.textContent} */}
               <textarea
-                placeHolder="说点什么22......"
+                placeHolder="你想知道点什么......"
                 class="txt"
                 value={this.textContent} />
             </div>
@@ -78,13 +78,6 @@ class MyApp extends QuarkElement {
       utterThis.rate = 1;
       synth.speak(utterThis);
     }
-    // function speak(){
-    // }
-    // speak();
-
-        // inputForm.onsubmit = function(event) {
-        //   event.preventDefault();
-        // }
   }
 
   speech = () => {
