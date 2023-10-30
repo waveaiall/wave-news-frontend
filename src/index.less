@@ -1,3 +1,7 @@
+
+:host {
+
+}
 .type {
   display: flex;
   justify-content: center;
@@ -14,11 +18,7 @@
   font-size: 14px;
   color: #fff;
   position: fixed;
-  // top: 0;
-  // left: 0;
-  // right: 0;
   bottom: 10%;
-  // margin: auto;
 }
 
 .start::after {
@@ -57,30 +57,32 @@
 
 
 .result-module {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // margin-top: 15%;
 }
 
 .result {
   width: 300px;
   height: 300px;
-  border-radius: 50%;
-  position: fixed;
-  top: 10%;
-  background-image: linear-gradient(#e66465, #9198e5);
-  // position: fixed;
-  // z-index: 100;
-  // left: 0;
-  // right: 0;
-  // top: 0;
-  // padding: 10px 15px;
-  // text-align: center;
-  // background: none;
-  // border-top: 1px solid #fff;
-  // transition: all 0.2s;
-  // margin-top: -100px;
-  // font-size: 22px;
+  // border-radius: 50%;
+  padding: 18px;
+  overflow: hidden;
+  // background-image: linear-gradient(#e66465, #9198e5);
+
+  .content-before{
+    float: left;
+    width: 50%;
+    height: 100%;
+    shape-outside: radial-gradient(farthest-side ellipse at right, transparent 98%, red);
+  }
+  .content-after{
+    float: right;
+    width: 50%;
+    height: 100%;
+    shape-outside: radial-gradient(farthest-side ellipse at left, transparent 98%, red);
+  }
 }
 
 // 成功样式

@@ -14,23 +14,78 @@ class MyApp extends QuarkElement {
   loading: Boolean = false
 
   componentDidMount() {
-    const btn =    this.shadowRoot.querySelector("#start-btn")
-    const result = this.shadowRoot.querySelector("#result")
+    this.speech();
+  }
+
+	render() {
+		return (
+        <>
+          <header>Right Here Waiting for you!</header>
+
+          <section className="result-module">
+
+          <form>
+            <div class="result" id="result">
+              {/* {this.textContent} */}
+              <input onPropertyChange={this.txtChange} type="text" class="txt" value={this.textContent} />
+            </div>
+
+              {/* <div class="controls">
+                <button id="play" type="submit">Play</button>
+              </div> */}
+            </form>
+
+          </section>
+
+          <div className="type">
+            <div class="btn" id="start-btn">
+              {this.loading ? '正在识别' :'开始识别'}
+            </div>
+          </div>
+          </>
+		);
+	}
+
+  speak = () => {
+    var synth = window.speechSynthesis;
+    var inputTxt = this.shadowRoot.querySelector('.txt');
+
+    var voices = [];
+
+    function populateVoiceList() {
+      voices = synth.getVoices();
+    }
+
+    populateVoiceList();
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = populateVoiceList;
+    }
+
+
+    // function speak(){
+    // }
+    if(inputTxt.value !== ''){
+      var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+
+      utterThis.voice = voices[64];
+      utterThis.pitch = 1;
+      utterThis.rate = 1;
+      synth.speak(utterThis);
+    }
+
+    // inputForm.onsubmit = function(event) {
+    //   event.preventDefault();
+    //   speak();
+    // }
+  }
+
+  speech = () => {
+    const btn = this.shadowRoot.querySelector("#start-btn")
     const _this = this;
 
-    // var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
-    // var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
-    // var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
-
-    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    // var SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
-    // var SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent
-
-    // console.log(SpeechGrammarList, 111);
-
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition()
-
-    console.log(recognition, 111122);
 
     recognition.continuous = false
     // recognition.lang = 'en-US'
@@ -53,37 +108,26 @@ class MyApp extends QuarkElement {
       console.log('onspeechend');
         // onError("未识别...")
         recognition.stop()
+
+        _this.speak() // 播放
     }
 
     recognition.onerror = function(event) {
         console.log('onerror: ' + event.error)
-        result.className = "result error"
+        // result.className = "result error"
+
         _this.textContent = event.error
         _this.loading = false
+
+        btn.className = "btn"
     }
 
-
     btn.addEventListener("click", (e) => {
-        e.target.className += " start"
+        e.target.className = "btn start"
+        if(this.loading) return;
         recognition.start()
-        // btn.textContent = "识别中..."
         this.loading = true
     })
+
   }
-
-	render() {
-		return (
-        <>
-          <section className="result-module">
-            <div class="result" id="result">{this.textContent}</div>
-          </section>
-
-          <div className="type">
-            <div class="btn" id="start-btn">
-              {this.loading ? '正在识别' :'开始识别'}
-            </div>
-          </div>
-          </>
-		);
-	}
 }
