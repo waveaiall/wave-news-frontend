@@ -4,10 +4,6 @@ import style from "./index.less?inline"
 import VConsole from 'vconsole';
 const vConsole = new VConsole({ theme: 'dark' });
 
-
-// import './app-main'
-
-
 @customElement({ tag: "my-app", style })
 class MyApp extends QuarkElement {
 
@@ -22,11 +18,11 @@ class MyApp extends QuarkElement {
     const result = this.shadowRoot.querySelector("#result")
     const _this = this;
 
-    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
+    // var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
     // var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList
     // var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
 
-    // var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     // var SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
     // var SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent
 
@@ -43,6 +39,8 @@ class MyApp extends QuarkElement {
     recognition.maxAlternatives = 1
 
     recognition.onresult = (e) => {
+      console.log(e, 'onresult');
+
         const text = event.results[0][0].transcript
         // onSuccess(text)
         btn.className = "btn"
@@ -52,13 +50,13 @@ class MyApp extends QuarkElement {
 
 
     recognition.onspeechend = function() {
+      console.log('onspeechend');
         // onError("未识别...")
         recognition.stop()
     }
 
     recognition.onerror = function(event) {
-        // onError('识别错误: ' + event.error)
-
+        console.log('onerror: ' + event.error)
         result.className = "result error"
         _this.textContent = event.error
         _this.loading = false
