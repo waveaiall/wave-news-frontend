@@ -14,7 +14,8 @@
 	],
 	"dependencies": {
 		"gluang": "^0.0.1",
-		"quarkc": "^1.0.40"
+		"quarkc": "^1.0.40",
+		"vconsole": "^3.15.1"
 	},
 	"devDependencies": {
 		"@types/node": "^20.2.5",
