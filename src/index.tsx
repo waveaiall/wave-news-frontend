@@ -14,20 +14,24 @@ class MyApp extends QuarkElement {
   loading: Boolean = false
 
   componentDidMount() {
+    this.speak();
     this.speech();
   }
 
 	render() {
 		return (
         <>
-          <header>Right Here Waiting for you!</header>
+          {/* <header>Right Here Waiting for you!</header> */}
 
           <section className="result-module">
 
-          <form>
+           <form>
             <div class="result" id="result">
               {/* {this.textContent} */}
-              <input onPropertyChange={this.txtChange} type="text" class="txt" value={this.textContent} />
+              <textarea
+                placeHolder="说点什么22......"
+                class="txt"
+                value={this.textContent} />
             </div>
 
               {/* <div class="controls">
@@ -47,8 +51,10 @@ class MyApp extends QuarkElement {
 	}
 
   speak = () => {
+    const _this = this;
     var synth = window.speechSynthesis;
-    var inputTxt = this.shadowRoot.querySelector('.txt');
+    // var inputTxt = this.shadowRoot.querySelector('.txt');
+    // var inputForm = this.shadowRoot.querySelector('form');
 
     var voices = [];
 
@@ -62,22 +68,23 @@ class MyApp extends QuarkElement {
       speechSynthesis.onvoiceschanged = populateVoiceList;
     }
 
+    console.log(_this.textContent, 2222);
 
-    // function speak(){
-    // }
-    if(inputTxt.value !== ''){
-      var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+    if(_this.textContent !== ''){
+      var utterThis = new SpeechSynthesisUtterance(_this.textContent);
 
       utterThis.voice = voices[64];
       utterThis.pitch = 1;
       utterThis.rate = 1;
       synth.speak(utterThis);
     }
-
-    // inputForm.onsubmit = function(event) {
-    //   event.preventDefault();
-    //   speak();
+    // function speak(){
     // }
+    // speak();
+
+        // inputForm.onsubmit = function(event) {
+        //   event.preventDefault();
+        // }
   }
 
   speech = () => {
@@ -97,19 +104,17 @@ class MyApp extends QuarkElement {
       console.log(e, 'onresult');
 
         const text = event.results[0][0].transcript
-        // onSuccess(text)
         btn.className = "btn"
         _this.textContent = text
         _this.loading = false
+
+        _this.speak() // 播放
     }
 
 
     recognition.onspeechend = function() {
       console.log('onspeechend');
-        // onError("未识别...")
-        recognition.stop()
-
-        _this.speak() // 播放
+      recognition.stop()
     }
 
     recognition.onerror = function(event) {
