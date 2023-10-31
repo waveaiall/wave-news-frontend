@@ -14,7 +14,7 @@ class MyApp extends QuarkElement {
   myQuestion: string = '我想了解...'
 
   @state()
-  textContent: string = ''
+  audioResponseFilePath: string = ''
 
   @state()
   loading: Boolean = false
@@ -35,9 +35,12 @@ class MyApp extends QuarkElement {
             <h4>提问：{ this.myQuestion }</h4>
           </div>
 
-          <audio controls autoplay>
-            <source src="https://www.runoob.com/try/demo_source/horse.mp3" type="" />
-          </audio>
+          {
+            this.audioResponseFilePath ?
+            <audio controls autoplay>
+              <source src={this.audioResponseFilePath} type="" />
+            </audio> : null
+          }
 
           <p id="chat">
           {
@@ -67,7 +70,7 @@ class MyApp extends QuarkElement {
         const {data} = response;
         // handle success
         console.log(response);
-        _this.textContent = response.data.text.response_text
+        _this.audioResponseFilePath = response.data.audio_response_file_path
         _this.fetchLoading = false
 
         _this.printText(data.text.response_text)
@@ -144,7 +147,7 @@ class MyApp extends QuarkElement {
 
     recognition.onerror = function(event) {
         console.log('onerror: ' + event.error)
-        _this.textContent = event.error === 'no-speech' ? '没有检测到您的语音' : event.error
+        _this.audioResponseFilePath = ''
         _this.loading = false
 
         btn.className = "btn"
