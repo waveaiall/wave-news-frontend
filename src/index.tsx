@@ -8,14 +8,13 @@ const vConsole = new VConsole({ theme: 'dark' });
 class MyApp extends QuarkElement {
 
   @state()
-  textContent: string = '你好'
+  textContent: string = 'Right Here Waiting for you'
 
   @state()
   loading: Boolean = false
 
   componentDidMount() {
-    this.speak();
-    this.speech();
+    this.init();
   }
 
 	render() {
@@ -24,39 +23,11 @@ class MyApp extends QuarkElement {
           {/* <header>Right Here Waiting for you!</header> */}
 
           <section className="result-module">
-
-           {/* <form>
-            <div class="result" id="result">
-              <textarea
-                placeHolder="你想知道点什么......"
-                class="txt"
-                disabled
-                value={this.textContent} />
-            </div>
-            </form> */}
+            {this.textContent}
 
           <form>
-
-            <input id="txt" type="text" class="txt" value={this.textContent}/>
-
             <div style="display: none;">
-              <div>
-                <label for="rate">Rate</label
-                ><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate" />
-                <div class="rate-value">1</div>
-                <div class="clearfix"></div>
-              </div>
-              <div>
-                <label for="pitch">Pitch</label
-                ><input type="range" min="0" max="2" value="1" step="0.1" id="pitch" />
-                <div class="pitch-value">1</div>
-                <div class="clearfix"></div>
-              </div>
               <select></select>
-            </div>
-
-            <div class="controls">
-              <button id="play" type="submit">Play</button>
             </div>
           </form>
 
@@ -72,17 +43,13 @@ class MyApp extends QuarkElement {
 		);
 	}
 
-  speak = () => {
+  init = () => {
+    // ============================= 播放语音 start =============================
     const synth = window.speechSynthesis;
 
     const inputForm = this.shadowRoot.querySelector("form");
-    const inputTxt = this.shadowRoot.querySelector(".txt");
+    // const inputTxt = this.shadowRoot.querySelector(".txt");
     const voiceSelect = this.shadowRoot.querySelector("select");
-
-    const pitch = this.shadowRoot.querySelector("#pitch");
-    const pitchValue = this.shadowRoot.querySelector(".pitch-value");
-    const rate = this.shadowRoot.querySelector("#rate");
-    const rateValue = this.shadowRoot.querySelector(".rate-value");
 
     let voices = [];
 
@@ -130,8 +97,8 @@ class MyApp extends QuarkElement {
         return;
       }
 
-      if (inputTxt.value !== "") {
-        const utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+      if (_this.textContent !== "") {
+        const utterThis = new SpeechSynthesisUtterance(_this.textContent);
 
         utterThis.onend = function (event) {
           console.log("SpeechSynthesisUtterance.onend");
@@ -152,146 +119,15 @@ class MyApp extends QuarkElement {
         }
 
         utterThis.voice = voices[29]; // 中文
-        utterThis.pitch = pitch.value;
-        utterThis.rate = rate.value;
+        utterThis.pitch = 1;
+        utterThis.rate = 1;
         synth.speak(utterThis);
       }
     }
 
-    inputForm.onsubmit = function (event) {
-      event.preventDefault();
-      speak();
-    };
-  }
-
-  speak2 = () => {
-    const _this = this;
-    var synth = window.speechSynthesis;
-    // var inputTxt = this.shadowRoot.querySelector('.txt');
-    // var inputForm = this.shadowRoot.querySelector('form');
-
-    var voices = [];
-
-    function populateVoiceList() {
-      voices = synth.getVoices();
-    }
-
-    populateVoiceList();
-
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoiceList;
-    }
-
-    console.log(_this.textContent, 2222);
-
-    if(_this.textContent !== ''){
-      var utterThis = new SpeechSynthesisUtterance(_this.textContent);
-
-      utterThis.voice = voices[64];
-      utterThis.pitch = 1;
-      utterThis.rate = 1;
-      synth.speak(utterThis);
-      console.log('speak');
-
-    }
-  }
-
-  speech = () => {
-
-    const synth = window.speechSynthesis;
-
-    const inputForm = this.shadowRoot.querySelector("form");
-    const inputTxt = this.shadowRoot.querySelector(".txt");
-    const voiceSelect = this.shadowRoot.querySelector("select");
-
-    const pitch = this.shadowRoot.querySelector("#pitch");
-    const rate = this.shadowRoot.querySelector("#rate");
-
-    let voices = [];
-
-    function populateVoiceList() {
-      voices = synth.getVoices().sort(function (a, b) {
-        const aname = a.name.toUpperCase();
-        const bname = b.name.toUpperCase();
-
-        if (aname < bname) {
-          return -1;
-        } else if (aname == bname) {
-          return 0;
-        } else {
-          return +1;
-        }
-      });
-      const selectedIndex =
-        voiceSelect.selectedIndex < 0 ? 0 : voiceSelect.selectedIndex;
-      voiceSelect.innerHTML = "";
-
-      for (let i = 0; i < voices.length; i++) {
-        const option = document.createElement("option");
-        option.textContent = `${voices[i].name} (${voices[i].lang})`;
-
-        if (voices[i].default) {
-          option.textContent += " -- DEFAULT";
-        }
-
-        option.setAttribute("data-lang", voices[i].lang);
-        option.setAttribute("data-name", voices[i].name);
-        voiceSelect.appendChild(option);
-      }
-      voiceSelect.selectedIndex = selectedIndex;
-    }
-
-    populateVoiceList();
-
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoiceList;
-    }
-
-    function speak() {
-      if (synth.speaking) {
-        console.error("speechSynthesis.speaking");
-        return;
-      }
-
-      if (inputTxt.value !== "") {
-        const utterThis = new SpeechSynthesisUtterance(inputTxt.value);
-
-        utterThis.onend = function (event) {
-          console.log("SpeechSynthesisUtterance.onend");
-        };
-
-        utterThis.onerror = function (event) {
-          console.error("SpeechSynthesisUtterance.onerror");
-        };
-
-        const selectedOption =
-          voiceSelect.selectedOptions[0].getAttribute("data-name");
-
-        for (let i = 0; i < voices.length; i++) {
-          if (voices[i].name === selectedOption) {
-            utterThis.voice = voices[i];
-            break;
-          }
-        }
-
-        utterThis.voice = voices[29]; // 中文
-        utterThis.pitch = pitch.value;
-        utterThis.rate = rate.value;
-        synth.speak(utterThis);
-      }
-    }
-
-    inputForm.onsubmit = function (event) {
-      event.preventDefault();
-      speak();
-    };
 
 
-    // speak function end
-
-
-
-
+    // ============================= 输入语音 start =============================
     const btn = this.shadowRoot.querySelector("#start-btn")
     const _this = this;
 
@@ -323,8 +159,6 @@ class MyApp extends QuarkElement {
 
     recognition.onerror = function(event) {
         console.log('onerror: ' + event.error)
-        // result.className = "result error"
-
         _this.textContent = event.error
         _this.loading = false
 
@@ -337,11 +171,5 @@ class MyApp extends QuarkElement {
         recognition.start()
         this.loading = true
     })
-
-
-
-
-
-
   }
 }
