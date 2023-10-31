@@ -167,13 +167,17 @@ class MyApp extends QuarkElement {
           voiceSelect.selectedOptions[0].getAttribute("data-name");
 
         for (let i = 0; i < voices.length; i++) {
+          console.log(voices[i].name, voices[i].lang);
+
           if (voices[i].name === selectedOption) {
             utterThis.voice = voices[i];
             break;
           }
         }
 
-        console.log('voices', voices);
+
+
+        // console.log('voices', voices);
 
         utterThis.voice = voices[29]; // 中文
         utterThis.lang = 'zh-CN'
