@@ -28,25 +28,31 @@ class MyApp extends QuarkElement {
 
 	render() {
 		return (
-        <>
-          <section className="result-module">
-            <div>
-              <h4>提问：{ this.myQuestion }</h4>
-            </div>
-            <p id="chat">
-            {
-              this.fetchLoading ? 'Loading...' : null
-            }
-            </p>
+      <>
 
-          </section>
-
-          <div className="type">
-            <div class="btn" id="start-btn">
-              {this.loading ? '正在识别' :'开始识别'}
-            </div>
+        <section className="result-module">
+          <div>
+            <h4>提问：{ this.myQuestion }</h4>
           </div>
-          </>
+
+          <audio controls autoplay>
+            <source src="https://www.runoob.com/try/demo_source/horse.mp3" type="" />
+          </audio>
+
+          <p id="chat">
+          {
+            this.fetchLoading ? 'Loading...' : null
+          }
+          </p>
+
+        </section>
+
+        <div className="type">
+          <div class="btn" id="start-btn">
+            {this.loading ? '正在识别' :'开始识别'}
+          </div>
+        </div>
+      </>
 		);
 	}
 
