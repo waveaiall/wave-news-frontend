@@ -26,48 +26,6 @@ class MyApp extends QuarkElement {
     this.speech();
   }
 
-
-/**
- * @description:
- * @param {HTMLElement} dom - 打印内容的dom
- * @param {string} content - 打印文本内容
- * @param {number} speed - 打印速度
- * @return {void}
- */
-printText = (content, speed = 50) => {
-  const dom = this.shadowRoot.querySelector('#chat')
-  const _this = this
-
-  let index = 0
-  _this.setCursorStatus('typing')
-
-  let printInterval = setInterval(() => {
-    dom.innerText += content[index]
-    index++
-    if (index >= content.length) {
-      _this.setCursorStatus('end')
-      clearInterval(printInterval)
-    }
-  }, speed)
-}
-
-
-/**
- * @description: 设置dom的光标状态
- * @param {HTMLElement} dom - 打印内容的dom
- * @param {"loading"|"typing"|"end"} status - 打印状态
- * @return {void}
- */
-setCursorStatus = (status) => {
-  const classList = {
-    loading: 'typing blinker',
-    typing: 'typing',
-    end: '',
-  }
-  const dom = this.shadowRoot.querySelector('#chat')
-  dom.className = classList[status]
-}
-
 	render() {
 		return (
         <>
@@ -95,7 +53,7 @@ setCursorStatus = (status) => {
   fetchData = (val) => {
     const _this = this
     _this.fetchLoading = true
-    axios.post('https://47.103.124.169:3002/chat-new/', {
+    axios.post('http://47.103.124.169:3002/chat-new/', {
       user_id: "123",
       request_text: val,
     })
@@ -108,6 +66,41 @@ setCursorStatus = (status) => {
 
         _this.printText(data.text.response_text)
       })
+      .catch(err => {
+        console.log(err, 222);
+        _this.printText('请重新提问，没有找到有用的信息~')
+        _this.fetchLoading = false;
+
+      })
+  }
+
+  printText = (content, speed = 50) => {
+    const dom = this.shadowRoot.querySelector<HTMLElement>('#chat')
+    const _this = this
+
+    let index = 0
+    _this.setCursorStatus('typing')
+
+    let printInterval = setInterval(() => {
+      dom.innerText += content[index]
+      index++
+      if (index >= content.length) {
+        _this.setCursorStatus('end')
+        clearInterval(printInterval)
+      }
+    }, speed)
+  }
+
+
+  // 设置dom的光标状态
+  setCursorStatus = (status) => {
+    const classList = {
+      loading: 'typing blinker',
+      typing: 'typing',
+      end: '',
+    }
+    const dom = this.shadowRoot.querySelector('#chat')
+    dom.className = classList[status]
   }
 
   // 录入声音，转文字
@@ -150,7 +143,7 @@ setCursorStatus = (status) => {
         btn.className = "btn"
     }
 
-    btn.addEventListener("click", (e) => {
+    btn.addEventListener("click", (e: any) => {
         e.target.className = "btn start"
         if(this.loading) return;
         recognition.start()
