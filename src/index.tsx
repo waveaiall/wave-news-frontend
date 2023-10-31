@@ -11,30 +11,75 @@ const vConsole = new VConsole({ theme: 'dark' });
 class MyApp extends QuarkElement {
 
   @state()
-  textContent: string = 'Hello'
+  textContent: string = '我想了解...'
 
   @state()
   loading: Boolean = false
 
+  @state()
+  fetchLoading: Boolean = false
+
   componentDidMount() {
     this.speech();
-
-    axios.post('http://47.103.124.169:3002/chat-new/', {
-      user_id: "123",
-      request_text: "我想了解以色列的建国史",
-    })
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-
   }
+
+
+/**
+ * @description:
+ * @param {HTMLElement} dom - 打印内容的dom
+ * @param {string} content - 打印文本内容
+ * @param {number} speed - 打印速度
+ * @return {void}
+ */
+printText = (content, speed = 50) => {
+  const dom = this.shadowRoot.querySelector('#chat')
+  const _this = this
+
+  let index = 0
+  _this.setCursorStatus('typing')
+
+  let printInterval = setInterval(() => {
+    dom.innerText += content[index]
+    index++
+    if (index >= content.length) {
+      _this.setCursorStatus('end')
+      clearInterval(printInterval)
+    }
+  }, speed)
+}
+
+
+/**
+ * @description: 设置dom的光标状态
+ * @param {HTMLElement} dom - 打印内容的dom
+ * @param {"loading"|"typing"|"end"} status - 打印状态
+ * @return {void}
+ */
+setCursorStatus = (status) => {
+  const classList = {
+    loading: 'typing blinker',
+    typing: 'typing',
+    end: '',
+  }
+  const dom = this.shadowRoot.querySelector('#chat')
+  dom.className = classList[status]
+}
 
 	render() {
 		return (
         <>
+
+{/* <button onClick={() => this.printText('设计模式（Design pattern）代表了最佳的实践，设计模式是一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了重用代码、让代码更容易被他人理解、保证代码可靠性。这些解决方案是众多软件开发人员经过相当长的一段时间的试验和错误总结出来的。')}>键入字符</button> */}
+
+
           <section className="result-module">
-            {this.textContent}
+            <div>
+              <h4>提问：{ this.textContent }</h4>
+            </div>
+            <p id="chat"></p>
+            {/* {
+              this.fetchLoading ? 'Loading...' : null
+            } */}
           </section>
 
           <div className="type">
@@ -45,6 +90,24 @@ class MyApp extends QuarkElement {
           </>
 		);
 	}
+
+  fetchData = (val) => {
+    const _this = this
+    _this.fetchLoading = true
+    axios.post('http://47.103.124.169:3002/chat-new/', {
+      user_id: "123",
+      request_text: val,
+    })
+      .then(function (response) {
+        const {data} = response;
+        // handle success
+        console.log(response);
+        _this.textContent = response.data.text.response_text
+        _this.fetchLoading = false
+
+        _this.printText(data.text.response_text)
+      })
+  }
 
   // 录入声音，转文字
   speech = () => {
@@ -70,6 +133,7 @@ class MyApp extends QuarkElement {
 
         // _this.speak() // 播放
         // speak() // 播放
+        _this.fetchData(text)
     }
 
 
