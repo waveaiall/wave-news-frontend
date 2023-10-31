@@ -138,7 +138,6 @@ class MyApp extends QuarkElement {
       voiceSelect.selectedIndex = selectedIndex;
     }
 
-    console.log('voices', voices);
 
 
     populateVoiceList();
@@ -173,7 +172,12 @@ class MyApp extends QuarkElement {
             break;
           }
         }
+
+        console.log('voices', voices);
+
         utterThis.voice = voices[29]; // 中文
+        utterThis.lang = 'zh-CN'
+
         utterThis.pitch = 1;
         utterThis.rate = 1;
         synth.speak(utterThis);
