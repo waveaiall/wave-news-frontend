@@ -8,7 +8,7 @@ const vConsole = new VConsole({ theme: 'dark' });
 class MyApp extends QuarkElement {
 
   @state()
-  textContent: string = '你好'
+  textContent: string = 'Hello'
 
   @state()
   loading: Boolean = false
@@ -37,8 +37,8 @@ class MyApp extends QuarkElement {
 
           <form>
             <label for="txt">Enter text</label>
-
-            <input id="txt" type="text" class="txt" value={this.textContent}/>
+            <input id="txt" type="text" class="txt"
+                      value={this.textContent}/>
 
             <div style="display: none;">
               <div>
@@ -151,9 +151,6 @@ class MyApp extends QuarkElement {
             break;
           }
         }
-        console.log(voices, 222);
-
-        utterThis.voice = voices[29]; //
         utterThis.pitch = pitch.value;
         utterThis.rate = rate.value;
         synth.speak(utterThis);
