@@ -8,7 +8,7 @@ const vConsole = new VConsole({ theme: 'dark' });
 class MyApp extends QuarkElement {
 
   @state()
-  textContent: string = 'Right Here Waiting for you'
+  textContent: string = '你好'
 
   @state()
   loading: Boolean = false
@@ -23,9 +23,10 @@ class MyApp extends QuarkElement {
           {/* <header>Right Here Waiting for you!</header> */}
 
           <section className="result-module">
-            {this.textContent}
-
           <form>
+
+            <input id="txt" type="text" class="txt" value={this.textContent}/>
+
             <div style="display: none;">
               <select></select>
             </div>
@@ -48,7 +49,7 @@ class MyApp extends QuarkElement {
     const synth = window.speechSynthesis;
 
     const inputForm = this.shadowRoot.querySelector("form");
-    // const inputTxt = this.shadowRoot.querySelector(".txt");
+    const inputTxt = this.shadowRoot.querySelector(".txt");
     const voiceSelect = this.shadowRoot.querySelector("select");
 
     let voices = [];
@@ -97,8 +98,8 @@ class MyApp extends QuarkElement {
         return;
       }
 
-      if (_this.textContent !== "") {
-        const utterThis = new SpeechSynthesisUtterance(_this.textContent);
+      if (inputTxt.value !== "") {
+        const utterThis = new SpeechSynthesisUtterance(inputTxt.value);
 
         utterThis.onend = function (event) {
           console.log("SpeechSynthesisUtterance.onend");
@@ -171,5 +172,11 @@ class MyApp extends QuarkElement {
         recognition.start()
         this.loading = true
     })
+
+
+
+
+
+
   }
 }
