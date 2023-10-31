@@ -75,10 +75,12 @@ setCursorStatus = (status) => {
             <div>
               <h4>提问：{ this.myQuestion }</h4>
             </div>
-            <p id="chat"></p>
-            {/* {
+            <p id="chat">
+            {
               this.fetchLoading ? 'Loading...' : null
-            } */}
+            }
+            </p>
+
           </section>
 
           <div className="type">
@@ -93,7 +95,7 @@ setCursorStatus = (status) => {
   fetchData = (val) => {
     const _this = this
     _this.fetchLoading = true
-    axios.post('http://47.103.124.169:3002/chat-new/', {
+    axios.post('https://47.103.124.169:3002/chat-new/', {
       user_id: "123",
       request_text: val,
     })
