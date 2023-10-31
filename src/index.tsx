@@ -14,7 +14,7 @@ class MyApp extends QuarkElement {
   loading: Boolean = false
 
   componentDidMount() {
-    this.speak();
+    // this.speak();
     this.speech();
   }
 
@@ -37,8 +37,7 @@ class MyApp extends QuarkElement {
 
           <form>
             <label for="txt">Enter text</label>
-            <input id="txt" type="text" class="txt"
-                      value={this.textContent}/>
+            <input id="txt" type="text" class="txt" value={this.textContent} />
 
             <div style="display: none;">
               <div>
@@ -56,9 +55,9 @@ class MyApp extends QuarkElement {
               <select></select>
             </div>
 
-            <div class="controls">
+            {/* <div class="controls">
               <button id="play" type="submit">Play</button>
-            </div>
+            </div> */}
           </form>
 
 
@@ -74,6 +73,31 @@ class MyApp extends QuarkElement {
 	}
 
   speak = () => {
+
+    // inputForm.onsubmit = function (event) {
+    //   event.preventDefault();
+
+    //   speak();
+
+    //   inputTxt.blur();
+    // };
+
+    // pitch.onchange = function () {
+    //   pitchValue.textContent = pitch.value;
+    // };
+
+    // rate.onchange = function () {
+    //   rateValue.textContent = rate.value;
+    // };
+
+    // voiceSelect.onchange = function () {
+    //   speak();
+    // };
+  }
+
+  speech = () => {
+
+
     const synth = window.speechSynthesis;
 
     const inputForm = this.shadowRoot.querySelector("form");
@@ -151,66 +175,17 @@ class MyApp extends QuarkElement {
             break;
           }
         }
-        utterThis.pitch = pitch.value;
-        utterThis.rate = rate.value;
+        utterThis.voice = voices[29]; // 中文
+        utterThis.pitch = 1;
+        utterThis.rate = 1;
         synth.speak(utterThis);
       }
     }
 
-    inputForm.onsubmit = function (event) {
-      event.preventDefault();
 
-      speak();
 
-      inputTxt.blur();
-    };
 
-    pitch.onchange = function () {
-      pitchValue.textContent = pitch.value;
-    };
 
-    rate.onchange = function () {
-      rateValue.textContent = rate.value;
-    };
-
-    voiceSelect.onchange = function () {
-      speak();
-    };
-  }
-
-  speak2 = () => {
-    const _this = this;
-    var synth = window.speechSynthesis;
-    // var inputTxt = this.shadowRoot.querySelector('.txt');
-    // var inputForm = this.shadowRoot.querySelector('form');
-
-    var voices = [];
-
-    function populateVoiceList() {
-      voices = synth.getVoices();
-    }
-
-    populateVoiceList();
-
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoiceList;
-    }
-
-    console.log(_this.textContent, 2222);
-
-    if(_this.textContent !== ''){
-      var utterThis = new SpeechSynthesisUtterance(_this.textContent);
-
-      utterThis.voice = voices[64];
-      utterThis.pitch = 1;
-      utterThis.rate = 1;
-      synth.speak(utterThis);
-      console.log('speak');
-
-    }
-  }
-
-  speech = () => {
     const btn = this.shadowRoot.querySelector("#start-btn")
     const _this = this;
 
@@ -231,7 +206,8 @@ class MyApp extends QuarkElement {
         _this.textContent = text
         _this.loading = false
 
-        _this.speak() // 播放
+        // _this.speak() // 播放
+        speak() // 播放
     }
 
 
