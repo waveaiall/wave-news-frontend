@@ -55,9 +55,9 @@ class MyApp extends QuarkElement {
               <select></select>
             </div>
 
-            {/* <div class="controls">
+            <div class="controls">
               <button id="play" type="submit">Play</button>
-            </div> */}
+            </div>
           </form>
 
 
@@ -74,13 +74,6 @@ class MyApp extends QuarkElement {
 
   speak = () => {
 
-    // inputForm.onsubmit = function (event) {
-    //   event.preventDefault();
-
-    //   speak();
-
-    //   inputTxt.blur();
-    // };
 
     // pitch.onchange = function () {
     //   pitchValue.textContent = pitch.value;
@@ -181,6 +174,14 @@ class MyApp extends QuarkElement {
         synth.speak(utterThis);
       }
     }
+
+
+    inputForm.onsubmit = function (event) {
+      event.preventDefault();
+
+      speak();
+    };
+
 
 
 
