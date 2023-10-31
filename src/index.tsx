@@ -37,8 +37,10 @@ class MyApp extends QuarkElement {
 
           <form>
             {/* <label for="txt">Enter text</label> */}
-            {/* <input id="txt" type="text" class="txt" value={this.textContent} /> */}
-                {this.textContent}
+            <input id="txt" type="text" class="txt" value={this.textContent} />
+
+            {this.textContent}
+
             <div style="display: none;">
               {/* <div>
                 <label for="rate">Rate</label
