@@ -17,8 +17,8 @@ class MyApp extends QuarkElement {
   componentDidMount() {
     this.speech();
 
-    var msg = new SpeechSynthesisUtterance("输入要朗读的文字");
-					window.speechSynthesis.speak(msg);
+    // var msg = new SpeechSynthesisUtterance("输入要朗读的文字");
+		// 			window.speechSynthesis.speak(msg);
   }
 
 	render() {
@@ -71,7 +71,7 @@ class MyApp extends QuarkElement {
 
     recognition.onerror = function(event) {
         console.log('onerror: ' + event.error)
-        _this.textContent = event.error
+        _this.textContent = event.error === 'no-speech' ? '没有检测到您的语音' : event.error
         _this.loading = false
 
         btn.className = "btn"
