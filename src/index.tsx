@@ -8,7 +8,7 @@ const vConsole = new VConsole({ theme: 'dark' });
 class MyApp extends QuarkElement {
 
   @state()
-  textContent: string = ''
+  textContent: string = '你想知道点什么?'
 
   @state()
   loading: Boolean = false
