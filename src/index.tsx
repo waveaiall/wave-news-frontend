@@ -1,6 +1,8 @@
 
 import { QuarkElement, customElement, state } from "quarkc"
 import style from "./index.less?inline"
+import axios from 'axios';
+//const axios = require('axios'); // legacy way
 
 import VConsole from 'vconsole';
 const vConsole = new VConsole({ theme: 'dark' });
@@ -17,8 +19,15 @@ class MyApp extends QuarkElement {
   componentDidMount() {
     this.speech();
 
-    // var msg = new SpeechSynthesisUtterance("输入要朗读的文字");
-		// 			window.speechSynthesis.speak(msg);
+    axios.post('http://47.103.124.169:3002/chat-new/', {
+      user_id: "123",
+      request_text: "我想了解以色列的建国史",
+    })
+      .then(function (response) {
+        // handle success
+        console.log(response);
+      })
+
   }
 
 	render() {
