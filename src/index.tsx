@@ -8,7 +8,7 @@ const vConsole = new VConsole({ theme: 'dark' });
 class MyApp extends QuarkElement {
 
   @state()
-  textContent: string = 'Hello'
+  textContent: string = '你好'
 
   @state()
   loading: Boolean = false
@@ -35,27 +35,31 @@ class MyApp extends QuarkElement {
             </div>
             </form> */}
 
-<form>
-      <label for="txt">Enter text</label>
-      <input id="txt" type="text" class="txt"
-                value={this.textContent}/>
-      <div>
-        <label for="rate">Rate</label
-        ><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate" />
-        <div class="rate-value">1</div>
-        <div class="clearfix"></div>
-      </div>
-      <div>
-        <label for="pitch">Pitch</label
-        ><input type="range" min="0" max="2" value="1" step="0.1" id="pitch" />
-        <div class="pitch-value">1</div>
-        <div class="clearfix"></div>
-      </div>
-      <select></select>
-      <div class="controls">
-        <button id="play" type="submit">Play</button>
-      </div>
-    </form>
+          <form>
+            <label for="txt">Enter text</label>
+
+            <input id="txt" type="text" class="txt" value={this.textContent}/>
+
+            <div style="display: none;">
+              <div>
+                <label for="rate">Rate</label
+                ><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate" />
+                <div class="rate-value">1</div>
+                <div class="clearfix"></div>
+              </div>
+              <div>
+                <label for="pitch">Pitch</label
+                ><input type="range" min="0" max="2" value="1" step="0.1" id="pitch" />
+                <div class="pitch-value">1</div>
+                <div class="clearfix"></div>
+              </div>
+              <select></select>
+            </div>
+
+            <div class="controls">
+              <button id="play" type="submit">Play</button>
+            </div>
+          </form>
 
 
           </section>
@@ -147,6 +151,9 @@ class MyApp extends QuarkElement {
             break;
           }
         }
+
+        console.log(voices, 222);
+        utterThis.voice = voices[29]; // 中文
         utterThis.pitch = pitch.value;
         utterThis.rate = rate.value;
         synth.speak(utterThis);
