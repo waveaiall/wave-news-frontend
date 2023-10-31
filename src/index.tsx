@@ -138,6 +138,9 @@ class MyApp extends QuarkElement {
       voiceSelect.selectedIndex = selectedIndex;
     }
 
+    console.log('voices', voices);
+
+
     populateVoiceList();
 
     if (speechSynthesis.onvoiceschanged !== undefined) {
