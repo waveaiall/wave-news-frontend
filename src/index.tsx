@@ -75,8 +75,9 @@ class MyApp extends QuarkElement {
   }
 
   printText = (content, speed = 50) => {
-    const dom = this.shadowRoot.querySelector<HTMLElement>('#chat')
     const _this = this
+    const dom = this.shadowRoot.querySelector<HTMLElement>('#chat')
+    dom.innerText = '';
 
     let index = 0
     _this.setCursorStatus('typing')
