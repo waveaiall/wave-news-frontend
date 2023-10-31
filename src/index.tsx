@@ -36,11 +36,11 @@ class MyApp extends QuarkElement {
             </form> */}
 
           <form>
-            <label for="txt">Enter text</label>
-            <input id="txt" type="text" class="txt" value={this.textContent} />
+            {/* <label for="txt">Enter text</label> */}
+            {/* <input id="txt" type="text" class="txt" value={this.textContent} /> */}
 
             <div style="display: none;">
-              <div>
+              {/* <div>
                 <label for="rate">Rate</label
                 ><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate" />
                 <div class="rate-value">1</div>
@@ -51,7 +51,7 @@ class MyApp extends QuarkElement {
                 ><input type="range" min="0" max="2" value="1" step="0.1" id="pitch" />
                 <div class="pitch-value">1</div>
                 <div class="clearfix"></div>
-              </div>
+              </div> */}
               <select></select>
             </div>
 
@@ -155,8 +155,8 @@ class MyApp extends QuarkElement {
         return;
       }
 
-      if (inputTxt.value !== "") {
-        const utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+      if (this.textContent !== "") {
+        const utterThis = new SpeechSynthesisUtterance(this.textContent);
 
         utterThis.onend = function (event) {
           console.log("SpeechSynthesisUtterance.onend");
