@@ -11,7 +11,10 @@ const vConsole = new VConsole({ theme: 'dark' });
 class MyApp extends QuarkElement {
 
   @state()
-  textContent: string = '我想了解...'
+  myQuestion: string = '我想了解...'
+
+  @state()
+  textContent: string = ''
 
   @state()
   loading: Boolean = false
@@ -68,13 +71,9 @@ setCursorStatus = (status) => {
 	render() {
 		return (
         <>
-
-{/* <button onClick={() => this.printText('设计模式（Design pattern）代表了最佳的实践，设计模式是一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了重用代码、让代码更容易被他人理解、保证代码可靠性。这些解决方案是众多软件开发人员经过相当长的一段时间的试验和错误总结出来的。')}>键入字符</button> */}
-
-
           <section className="result-module">
             <div>
-              <h4>提问：{ this.textContent }</h4>
+              <h4>提问：{ this.myQuestion }</h4>
             </div>
             <p id="chat"></p>
             {/* {
@@ -128,11 +127,10 @@ setCursorStatus = (status) => {
 
         const text = event.results[0][0].transcript
         btn.className = "btn"
-        _this.textContent = text
+
+        _this.myQuestion = text
         _this.loading = false
 
-        // _this.speak() // 播放
-        // speak() // 播放
         _this.fetchData(text)
     }
 
