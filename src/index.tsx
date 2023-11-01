@@ -26,60 +26,60 @@ class MyApp extends QuarkElement {
     this.speech();
   }
 
-	render() {
-		return (
+  render() {
+    return (
       <>
 
         <section className="result-module">
           <div>
-            <h4>提问：{ this.myQuestion }</h4>
+            <h4>提问：{this.myQuestion}</h4>
           </div>
 
           {
             this.audioResponseFilePath ?
-            <div className="wave-icon">
-              <img src="https://media.giphy.com/media/l4XfgLyXAnyzCh7vfY/giphy.gif" alt="" />
-            </div> : null
+              <div className="wave-icon">
+                <img src="https://media.giphy.com/media/l4XfgLyXAnyzCh7vfY/giphy.gif" alt="" />
+              </div> : null
           }
 
           <p id="chat">
             {
-              this.fetchLoading ?  'Loading...' : null
+              this.fetchLoading ? 'Loading...' : null
             }
           </p>
 
           {
             this.audioResponseFilePath ?
-            <audio controls autoplay>
-              <source src={this.audioResponseFilePath} type="" />
-            </audio> : null
+              <audio controls autoplay>
+                <source src={this.audioResponseFilePath} type="" />
+              </audio> : null
           }
 
         </section>
 
         <div className="type">
           <div class="btn" id="start-btn">
-            {this.loading ? '正在识别' :'开始识别'}
+            {this.loading ? '正在识别' : '开始识别'}
           </div>
         </div>
       </>
-		);
-	}
+    );
+  }
 
-  fetchData = (val) => {
+  fetchData = async (val) => {
     const _this = this
     _this.fetchLoading = true
 
-    axios.post('http://47.103.124.169:3002/chat-new/', {
+    axios.post('http://47.103.124.169:3002/chat-new-without-stream/', {
       user_id: "123",
       request_text: val,
     })
       .then(function (response) {
-        const {data} = response;
-        console.log(data, 1111);
-
+        const { data } = response;
         _this.fetchLoading = false
         _this.audioResponseFilePath = data.audio_response_file_path
+        console.log(data, 1111);
+        console.log(data.text, 1234);
 
         _this.printText(data.text.response_text)
       })
@@ -137,34 +137,34 @@ class MyApp extends QuarkElement {
     recognition.onresult = (e) => {
       console.log(e, 'onresult');
 
-        const text = event.results[0][0].transcript
-        btn.className = "btn"
+      const text = event.results[0][0].transcript
+      btn.className = "btn"
 
-        _this.myQuestion = text
-        _this.loading = false
+      _this.myQuestion = text
+      _this.loading = false
 
-        _this.fetchData(text)
+      _this.fetchData(text)
     }
 
 
-    recognition.onspeechend = function() {
+    recognition.onspeechend = function () {
       console.log('onspeechend');
       recognition.stop()
     }
 
-    recognition.onerror = function(event) {
-        console.log('onerror: ' + event.error)
-        _this.audioResponseFilePath = ''
-        _this.loading = false
+    recognition.onerror = function (event) {
+      console.log('onerror: ' + event.error)
+      _this.audioResponseFilePath = ''
+      _this.loading = false
 
-        btn.className = "btn"
+      btn.className = "btn"
     }
 
     btn.addEventListener("click", (e: any) => {
-        e.target.className = "btn start"
-        if(this.loading) return;
-        recognition.start()
-        this.loading = true
+      e.target.className = "btn start"
+      if (this.loading) return;
+      recognition.start()
+      this.loading = true
     })
 
   }
