@@ -29,7 +29,6 @@ class MyApp extends QuarkElement {
 	render() {
 		return (
       <>
-
         <section className="result-module">
           <div>
             <h4>提问：{ this.myQuestion }</h4>
@@ -69,6 +68,8 @@ class MyApp extends QuarkElement {
   fetchData = (val) => {
     const _this = this
     _this.fetchLoading = true
+    // const dom = this.shadowRoot.querySelector<HTMLElement>('#chat')
+    // dom.innerText = ''
 
     axios.post('http://47.103.124.169:3002/chat-new/', {
       user_id: "123",
