@@ -37,16 +37,23 @@ class MyApp extends QuarkElement {
 
           {
             this.audioResponseFilePath ?
+            <div className="wave-icon">
+              <img src="https://media.giphy.com/media/l4XfgLyXAnyzCh7vfY/giphy.gif" alt="" />
+            </div> : null
+          }
+
+          <p id="chat">
+            {
+              this.fetchLoading ?  'Loading...' : null
+            }
+          </p>
+
+          {
+            this.audioResponseFilePath ?
             <audio controls autoplay>
               <source src={this.audioResponseFilePath} type="" />
             </audio> : null
           }
-
-          <p id="chat">
-          {
-            this.fetchLoading ? 'Loading...' : null
-          }
-          </p>
 
         </section>
 
@@ -62,16 +69,17 @@ class MyApp extends QuarkElement {
   fetchData = (val) => {
     const _this = this
     _this.fetchLoading = true
+
     axios.post('http://47.103.124.169:3002/chat-new/', {
       user_id: "123",
       request_text: val,
     })
       .then(function (response) {
         const {data} = response;
-        // handle success
-        console.log(response);
-        _this.audioResponseFilePath = response.data.audio_response_file_path
+        console.log(data, 1111);
+
         _this.fetchLoading = false
+        _this.audioResponseFilePath = data.audio_response_file_path
 
         _this.printText(data.text.response_text)
       })
@@ -86,7 +94,6 @@ class MyApp extends QuarkElement {
   printText = (content, speed = 50) => {
     const _this = this
     const dom = this.shadowRoot.querySelector<HTMLElement>('#chat')
-    dom.innerText = '';
 
     let index = 0
     _this.setCursorStatus('typing')
