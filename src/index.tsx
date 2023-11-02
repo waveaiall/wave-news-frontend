@@ -3,6 +3,7 @@ import { QuarkElement, customElement, state } from "quarkc"
 import style from "./index.less?inline"
 import axios from 'axios';
 //const axios = require('axios'); // legacy way
+import news from "./news.jpg"
 
 import VConsole from 'vconsole';
 const vConsole = new VConsole({ theme: 'dark' });
@@ -12,7 +13,7 @@ class MyApp extends QuarkElement {
   #printInterval
 
   @state()
-  myQuestion: string = '我想了解...'
+  myQuestion: string = '比如：巴以冲突历史原因？'
 
   @state()
   audioResponseFilePath: string = ''
@@ -35,8 +36,6 @@ class MyApp extends QuarkElement {
             <h4>提问：{ this.myQuestion }</h4>
           </div>
 
-          {/* { this.audioResponseFilePath } */}
-
           {
             this.audioResponseFilePath ?
             <div className="wave-icon">
@@ -46,13 +45,32 @@ class MyApp extends QuarkElement {
 
           <p id="chat">
             {
-              this.fetchLoading ?  'Loading...' : null
+              this.fetchLoading ?  'Loading...' : <>
+              {
+                !this.audioResponseFilePath ?
+                  <>
+                  <h5>今日全网热点新闻：</h5>
+                  <li>
+                    <strong>1</strong>  🔥 巴以冲突
+                  </li>
+                  <li>
+                    <strong>2</strong> 伊拉克民兵武装袭击驻叙美军
+                  </li>
+                  <li>
+                    <strong>3</strong> 咸鱼回应大学生在平台挂学校
+                  </li>
+                  <li>
+                    <span>4</span> 伊拉克民兵武装袭击驻叙美军
+                  </li>
+                  <li>
+                    <span>5</span> 伊拉克民兵武装袭击驻叙美军
+                  </li>
+                  </> : null
+              }
+
+              </>
             }
           </p>
-
-          {/* <audio id="audio" controls autoplay>
-              <source src={this.audioResponseFilePath} type="" />
-          </audio> */}
 
           {
             this.audioResponseFilePath ?
