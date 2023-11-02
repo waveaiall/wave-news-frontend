@@ -9,6 +9,7 @@ const vConsole = new VConsole({ theme: 'dark' });
 
 @customElement({ tag: "my-app", style })
 class MyApp extends QuarkElement {
+  #printInterval
 
   @state()
   myQuestion: string = '我想了解...'
@@ -34,6 +35,8 @@ class MyApp extends QuarkElement {
             <h4>提问：{ this.myQuestion }</h4>
           </div>
 
+          {/* { this.audioResponseFilePath } */}
+
           {
             this.audioResponseFilePath ?
             <div className="wave-icon">
@@ -47,13 +50,16 @@ class MyApp extends QuarkElement {
             }
           </p>
 
+          {/* <audio id="audio" controls autoplay>
+              <source src={this.audioResponseFilePath} type="" />
+          </audio> */}
+
           {
             this.audioResponseFilePath ?
-            <audio controls autoplay>
-              <source src={this.audioResponseFilePath} type="" />
-            </audio> : null
+            <audio id="audio" controls autoplay>
+              <source src={this.audioResponseFilePath} type="audio/mpeg" />
+            </audio> : ''
           }
-
         </section>
 
         <div className="type">
@@ -65,22 +71,39 @@ class MyApp extends QuarkElement {
 		);
 	}
 
+  init = () => {
+    const _this = this
+    const dom = this.shadowRoot.querySelector<HTMLElement>('#chat')
+    const audio = this.shadowRoot.querySelector<HTMLVideoElement>('#audio')
+    dom.innerText = ''
+    _this.audioResponseFilePath = ''
+    _this.loading = false
+    this.#printInterval = null
+    _this.setCursorStatus('end')
+
+    audio?.pause();
+  }
+
   fetchData = (val) => {
     const _this = this
     _this.fetchLoading = true
-    // const dom = this.shadowRoot.querySelector<HTMLElement>('#chat')
-    // dom.innerText = ''
 
-    axios.post('http://47.103.124.169:3002/chat-new/', {
+    // init data
+    _this.init()
+
+    // 请求数据
+    axios.post('http://47.103.124.169:3002/chat-new-without-stream', {
       user_id: "123",
       request_text: val,
     })
       .then(function (response) {
         const {data} = response;
-        console.log(data, 1111);
+        console.log(data.text, data.audio_response_file_path, 1111);
 
         _this.fetchLoading = false
         _this.audioResponseFilePath = data.audio_response_file_path
+
+        // audio.play();
 
         _this.printText(data.text.response_text)
       })
@@ -99,12 +122,12 @@ class MyApp extends QuarkElement {
     let index = 0
     _this.setCursorStatus('typing')
 
-    let printInterval = setInterval(() => {
+    this.#printInterval = setInterval(() => {
       dom.innerText += content[index]
       index++
       if (index >= content.length) {
         _this.setCursorStatus('end')
-        clearInterval(printInterval)
+        clearInterval(this.#printInterval)
       }
     }, speed)
   }
@@ -135,7 +158,15 @@ class MyApp extends QuarkElement {
     recognition.interimResults = false
     recognition.maxAlternatives = 1
 
+    // 说话结束
+    recognition.onspeechend = function() {
+      console.log('onspeechend');
+      recognition.stop()
+    }
+
+    // 结束的结果返回cb
     recognition.onresult = (e) => {
+      // _this.init()
       console.log(e, 'onresult');
 
         const text = event.results[0][0].transcript
@@ -147,21 +178,20 @@ class MyApp extends QuarkElement {
         _this.fetchData(text)
     }
 
-
-    recognition.onspeechend = function() {
-      console.log('onspeechend');
-      recognition.stop()
-    }
-
     recognition.onerror = function(event) {
         console.log('onerror: ' + event.error)
-        _this.audioResponseFilePath = ''
-        _this.loading = false
+        // _this.audioResponseFilePath = ''
+        // _this.loading = false
+
+        _this.init()
 
         btn.className = "btn"
     }
 
     btn.addEventListener("click", (e: any) => {
+
+        _this.init()
+
         e.target.className = "btn start"
         if(this.loading) return;
         recognition.start()
