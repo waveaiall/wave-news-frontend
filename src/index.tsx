@@ -2,8 +2,6 @@
 import { QuarkElement, customElement, state } from "quarkc"
 import style from "./index.less?inline"
 import axios from 'axios';
-//const axios = require('axios'); // legacy way
-import news from "./news.jpg"
 
 import VConsole from 'vconsole';
 const vConsole = new VConsole({ theme: 'dark' });
